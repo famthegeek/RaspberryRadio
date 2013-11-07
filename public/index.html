@@ -1,0 +1,8 @@
+<html>
+<head>
+<script src="/jquery.js"></script>
+</head>
+<body>
+<button onclick="$.get('/ctrl/prev');">Prev</button><button onclick="$.get('/ctrl/pause');">Pause/Unpause</button><button onclick="$.get('/ctrl/next');">Next</button><button onclick="$.get('/volume/down');">Down</button><button onclick="$.get('/volume/up');">Up</button><input id="file" type="text" name="file"><button onclick="$.get('/add/'+encodeURIComponent($('#file').val()));">Add to playlist</button>
+</body>
+</html>
