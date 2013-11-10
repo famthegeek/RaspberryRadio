@@ -1,8 +1,28 @@
 <html>
 <head>
-<script src="/jquery.js"></script>
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>
+$(function() {
+$( "#VolumeSlider" ).slider({ min: 40, max: 100, animate: "fast" });
+$( "#VolumeSlider" ).on( "slide", function( event, ui ) {
+  $.get('/volume/' + ui.value);
+
+} );
+})
+var source = new EventSource('/update-stream');
+
+      source.addEventListener('message', function(e) {
+       var livedata = JSON.parse(e.data)
+       $( "#VolumeSlider" ).slider( "option", "value", livedata['nowplaying']['volume']);
+       $('#nowPlaying').text(livedata['nowplaying']['title']);
+      }, false);
+</script>
 </head>
 <body>
-<button onclick="$.get('/ctrl/prev');">Prev</button><button onclick="$.get('/ctrl/pause');">Pause/Unpause</button><button onclick="$.get('/ctrl/next');">Next</button><button onclick="$.get('/volume/down');">Down</button><button onclick="$.get('/volume/up');">Up</button><input id="file" type="text" name="file"><button onclick="$.get('/add/'+encodeURIComponent($('#file').val()));">Add to playlist</button>
+<button onclick="$.get('/ctrl/prev');">Prev</button><button onclick="$.get('/ctrl/pause');">Pause/Unpause</button><button onclick="$.get('/ctrl/next');">Next</button><button onclick="$.get('/volume/down');">Down</button><button onclick="$.get('/volume/up');">Up</button><input id="file" type="text" name="file"><button onclick="$.get('/add/'+encodeURIComponent($('#file').val()));">Add to playlist</button><div id="nowPlaying"></div>
+<br />
+<div id="VolumeSlider"></div>
 </body>
 </html>
